@@ -12,11 +12,20 @@ app.use(function(req, res, next) {
 async function sendDiscordWebhook(ip) {
   try {
     const webhookURL = 'https://discord.com/api/webhooks/1225003664213676153/xbY_yvnKIMA2YdJ46Yn2KGUstXvNoNV-chhtDDTjaNGvqsL697IEoQ0KsEHu8bsMFeub';
+    const currentTime = new Date().toISOString();
+    const thumbnailURL = 'https://media.discordapp.net/attachments/1131863621937418241/1225009104825614367/imresizer-1712134141961.jpg?ex=661f91a2&is=660d1ca2&hm=88ba42aca20e9a782adc25ab78205b452902b14c3ae50e1881dc913f30e289b2&=&format=webp';
     const response = await axios.post(webhookURL, {
       embeds: [{
         title: 'SAMP API | GUARD NETWORK',
-        description: `IP: ${ip}`,
-        color: 0x00ff00
+        description: `**Acces Logs**\n**IP: ${ip}**`,
+        color: 0x00ff00,
+        timestamp: currentTime,
+        thumbnail: {
+          url: thumbnailURL
+        },
+        footer: {
+          text: '© DEV.LEXSAMP | GUARD-NETWORK'
+        }
       }]
     });
     console.log('Webhook sent successfully:', response.data);
