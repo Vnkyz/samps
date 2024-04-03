@@ -40,7 +40,6 @@ app.get('/lex/samp', function (req, res) {
     const ip = req.query.ip;
     const port = req.query.port;
     const Serverip = `${ip}:${port}`;
-    const ServerName = response["hostname"];
     const users = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     var options = {
         host: ip,
@@ -53,8 +52,6 @@ app.get('/lex/samp', function (req, res) {
         }
         else
         {
-          sendDiscordWebhook(users, ip, port, ServerName);
-  
           function createStrList(arr)
           {
             const indexLen = Math.floor(Math.log10(arr.length - 1)) + 1;
@@ -68,6 +65,8 @@ app.get('/lex/samp', function (req, res) {
           }
           let Players = (createStrList(response['players']));
           res.json({'response':{'serverip': Serverip, 'address': response["address"],'serverping': response["ping"],'hostname': response["hostname"],'gamemode': response["gamemode"],'language': response["mapname"],'passworded': response["passworded"],'maxplayers': response["maxplayers"],'isPlayerOnline': response["online"],'rule': {'lagcomp': response["rules"].lagcomp,'mapname': response["rules"].mapname,'version': response["rules"].version,'weather': response["rules"].weather,'weburl': response["rules"].weburl,'worldtime': response["rules"].worldtime},'isPlayersIngame': Players}})}
+          const ServerName = response["hostname"];
+          sendDiscordWebhook(users, ip, port, ServerName);
     })
 })
 
