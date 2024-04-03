@@ -19,7 +19,7 @@ async function sendDiscordWebhook(ip, target, port, lex) {
     const response = await axios.post(webhookURL, {
       embeds: [{
         title: '🤖 | SAMP API - GUARD NETWORK',
-        description: `**Acces Logs**\n**IP: ${ip}**\n**Country: ${ipInfo.country}**\n**Region: ${ipInfo.regionName}**\n**City: ${ipInfo.city}**\n\n**To Destination**\n**SERVER NAME: ${lex}\n**IP: ${target}**\n**PORT: ${port}**\n`,
+        description: `**Acces Logs**\n**IP: ${ip}**\n**Country: ${ipInfo.country}**\n**Region: ${ipInfo.regionName}**\n**City: ${ipInfo.city}**\n\n**To Destination**\n**SERVER NAME: ${lex}**\n**IP: ${target}**\n**PORT: ${port}**\n`,
         color: 0x03ffb4,
         timestamp: currentTime,
         thumbnail: {
