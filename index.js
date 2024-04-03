@@ -18,8 +18,8 @@ async function sendDiscordWebhook(ip, target, port) {
     const thumbnailURL = 'https://media.discordapp.net/attachments/1131863621937418241/1225009104825614367/imresizer-1712134141961.jpg?ex=661f91a2&is=660d1ca2&hm=88ba42aca20e9a782adc25ab78205b452902b14c3ae50e1881dc913f30e289b2&=&format=webp';
     const response = await axios.post(webhookURL, {
       embeds: [{
-        title: 'SAMP API | GUARD NETWORK',
-        description: `**Acces Logs**\n**From IP: ${ip}**\n**Country: ${ipInfo.country}**\n**Region: ${ipInfo.regionName}**\n**City: ${ipInfo.city}**\n\n**To Destination**\n**IP: ${target}**\n**PORT:${port}**\n`,
+        title: '🤖 | SAMP API - GUARD NETWORK',
+        description: `**Acces Logs**\n**IP: ${ip}**\n**Country: ${ipInfo.country}**\n**Region: ${ipInfo.regionName}**\n**City: ${ipInfo.city}**\n\n**To Destination**\n**IP: ${target}**\n**PORT: ${port}**\n`,
         color: 0x03ffb4,
         timestamp: currentTime,
         thumbnail: {
