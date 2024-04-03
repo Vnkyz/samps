@@ -1,11 +1,37 @@
 const express = require('express')
 const query = require('samp-query')
+const axios = require('axios');
 const app = express()
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+async function sendDiscordWebhook(ip) {
+  try {
+    const webhookURL = 'https://discord.com/api/webhooks/1225003664213676153/xbY_yvnKIMA2YdJ46Yn2KGUstXvNoNV-chhtDDTjaNGvqsL697IEoQ0KsEHu8bsMFeub';
+    const response = await axios.post(webhookURL, {
+      embeds: [{
+        title: 'SAMP API | GUARD NETWORK',
+        description: `IP: ${ip}`,
+        color: 0x00ff00
+      }]
+    });
+    console.log('Webhook sent successfully:', response.data);
+  } catch (error) {
+    console.error('Error sending webhook:', error.message);
+  }
+}
 
 app.get('/lex/samp', function (req, res) {
     const ip = req.query.ip;
     const port = req.query.port;
     const Serverip = `${ip}:${port}`;
+
+    sendDiscordWebhook(req.ip);
+
     var options = {
         host: ip,
         port: port
