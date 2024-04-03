@@ -9,7 +9,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-async function sendDiscordWebhook(ip, target, port) {
+async function sendDiscordWebhook(ip, target, port, lex) {
   try {
     const webhookURL = 'https://discord.com/api/webhooks/1225003664213676153/xbY_yvnKIMA2YdJ46Yn2KGUstXvNoNV-chhtDDTjaNGvqsL697IEoQ0KsEHu8bsMFeub';
     const currentTime = new Date().toISOString();
@@ -19,7 +19,7 @@ async function sendDiscordWebhook(ip, target, port) {
     const response = await axios.post(webhookURL, {
       embeds: [{
         title: '🤖 | SAMP API - GUARD NETWORK',
-        description: `**Acces Logs**\n**IP: ${ip}**\n**Country: ${ipInfo.country}**\n**Region: ${ipInfo.regionName}**\n**City: ${ipInfo.city}**\n\n**To Destination**\n**IP: ${target}**\n**PORT: ${port}**\n`,
+        description: `**Acces Logs**\n**IP: ${ip}**\n**Country: ${ipInfo.country}**\n**Region: ${ipInfo.regionName}**\n**City: ${ipInfo.city}**\n\n**To Destination**\n**SERVER NAME: ${lex}\n**IP: ${target}**\n**PORT: ${port}**\n`,
         color: 0x03ffb4,
         timestamp: currentTime,
         thumbnail: {
@@ -40,6 +40,7 @@ app.get('/lex/samp', function (req, res) {
     const ip = req.query.ip;
     const port = req.query.port;
     const Serverip = `${ip}:${port}`;
+    const ServerName = response["hostname"];
     const users = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     var options = {
         host: ip,
@@ -52,7 +53,7 @@ app.get('/lex/samp', function (req, res) {
         }
         else
         {
-          sendDiscordWebhook(users, ip, port);
+          sendDiscordWebhook(users, ip, port, ServerName);
   
           function createStrList(arr)
           {
@@ -67,7 +68,6 @@ app.get('/lex/samp', function (req, res) {
           }
           let Players = (createStrList(response['players']));
           res.json({'response':{'serverip': Serverip, 'address': response["address"],'serverping': response["ping"],'hostname': response["hostname"],'gamemode': response["gamemode"],'language': response["mapname"],'passworded': response["passworded"],'maxplayers': response["maxplayers"],'isPlayerOnline': response["online"],'rule': {'lagcomp': response["rules"].lagcomp,'mapname': response["rules"].mapname,'version': response["rules"].version,'weather': response["rules"].weather,'weburl': response["rules"].weburl,'worldtime': response["rules"].worldtime},'isPlayersIngame': Players}})}
-           
     })
 })
 
