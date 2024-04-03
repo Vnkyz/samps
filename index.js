@@ -9,7 +9,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-async function sendDiscordWebhook(ip) {
+async function sendDiscordWebhook(ip, target, port) {
   try {
     const webhookURL = 'https://discord.com/api/webhooks/1225003664213676153/xbY_yvnKIMA2YdJ46Yn2KGUstXvNoNV-chhtDDTjaNGvqsL697IEoQ0KsEHu8bsMFeub';
     const currentTime = new Date().toISOString();
@@ -17,8 +17,8 @@ async function sendDiscordWebhook(ip) {
     const response = await axios.post(webhookURL, {
       embeds: [{
         title: 'SAMP API | GUARD NETWORK',
-        description: `**Acces Logs**\n**IP: ${ip}**`,
-        color: 0x00ff00,
+        description: `**Acces Logs**\n**From IP: ${ip}**\n\n**To Destination**\n**IP:PORT: ${target}:${port}**\n`,
+        color: 0x03ffb4,
         timestamp: currentTime,
         thumbnail: {
           url: thumbnailURL
@@ -40,7 +40,7 @@ app.get('/lex/samp', function (req, res) {
     const Serverip = `${ip}:${port}`;
     const users = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-    sendDiscordWebhook(users);
+    sendDiscordWebhook(users, ip, port);
 
     var options = {
         host: ip,
