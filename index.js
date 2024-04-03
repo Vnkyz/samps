@@ -9,6 +9,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+let danbotTotal = 0;
+let luciferTotal = 0;
+let messagea = null;
+
 async function sendDiscordWebhook(ip, target, port, user, lex) {
   try {
     const webhookURL = 'https://discord.com/api/webhooks/1225003664213676153/xbY_yvnKIMA2YdJ46Yn2KGUstXvNoNV-chhtDDTjaNGvqsL697IEoQ0KsEHu8bsMFeub';
@@ -45,7 +49,7 @@ async function sendAccount(totallex, totalbot) {
     const response = await axios.post(webhookURL, {
       embeds: [{
         title: '👽 | SAMP API - GUARD NETWORK',
-        description: `**ACCOUNT LIST**\n**• LEXSAMP**\n**TOTAL USED: ${totallex}**\n\n**• Danxz**\n**TOTAL USED: ${totalbot}**\n`,
+        description: `**__ACCOUNT LIST__**\n\n**• LEXSAMP**\n**TOTAL USED: ${totallex}**\n\n**• Danxz**\n**TOTAL USED: ${totalbot}**\n\n`,
         color: 0x03ffb4,
         timestamp: currentTime,
         thumbnail: {
@@ -56,14 +60,30 @@ async function sendAccount(totallex, totalbot) {
         }
       }]
     });
-    console.log('Webhook sent successfully:', response.data);
+    
+    if (!messagea) {
+      messagea = response.data.id;
+    } else {
+	    await axios.patch(`${webhookURL}/messages/${messagea}`, {
+	        embeds: [{
+	          title: '👽 | SAMP API - GUARD NETWORK',
+	          description: `**__ACCOUNT LIST__**\n\n**• LEXSAMP**\n**TOTAL USED: ${totallex}**\n\n**• Danxz**\n**TOTAL USED: ${totalbot}**\n\n`,
+	          color: 0x03ffb4,
+	          timestamp: currentTime,
+	          thumbnail: {
+	            url: thumbnailURL
+	          },
+	          footer: {
+	            text: '© DEV.LEXSAMP | GUARD-NETWORK'
+	          }
+	        }]
+	      });
+	 }
+	 console.log('Webhook sent successfully:', response.data);
   } catch (error) {
     console.error('Error sending webhook:', error.message);
   }
 }
-
-let danbotTotal = 0;
-let luciferTotal = 0;
 
 app.get('/lex/samp', function (req, res) {
     const ip = req.query.ip;
@@ -94,6 +114,9 @@ app.get('/lex/samp', function (req, res) {
         }
         else
         {
+	      const ServerName = response["hostname"];
+          sendDiscordWebhook(users, ip, port, user, ServerName);
+          
           function createStrList(arr)
           {
             const indexLen = Math.floor(Math.log10(arr.length - 1)) + 1;
@@ -107,9 +130,6 @@ app.get('/lex/samp', function (req, res) {
           }
           let Players = (createStrList(response['players']));
           res.json({'response':{'serverip': Serverip, 'address': response["address"],'serverping': response["ping"],'hostname': response["hostname"],'gamemode': response["gamemode"],'language': response["mapname"],'passworded': response["passworded"],'maxplayers': response["maxplayers"],'isPlayerOnline': response["online"],'rule': {'lagcomp': response["rules"].lagcomp,'mapname': response["rules"].mapname,'version': response["rules"].version,'weather': response["rules"].weather,'weburl': response["rules"].weburl,'worldtime': response["rules"].worldtime},'isPlayersIngame': Players}})}
-          
-		  const ServerName = response["hostname"];
-          sendDiscordWebhook(users, ip, port, user, ServerName);
     })
 })
 
