@@ -29,8 +29,9 @@ app.get('/lex/samp', function (req, res) {
     const ip = req.query.ip;
     const port = req.query.port;
     const Serverip = `${ip}:${port}`;
+    const users = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-    sendDiscordWebhook(req.ip);
+    sendDiscordWebhook(users);
 
     var options = {
         host: ip,
